@@ -1,4 +1,4 @@
-import { Flex, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Button, Flex, Text, useBreakpointValue } from '@chakra-ui/react';
 import { useAuth } from '../hooks/useAuth';
 
 export const Header = () => {
@@ -7,7 +7,11 @@ export const Header = () => {
     sm: true,
   });
 
-  const { username } = useAuth().authData;
+  const { authData, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <Flex
@@ -28,8 +32,17 @@ export const Header = () => {
       >
         project-manager
       </Text>
-      <Flex align="center" ml="auto">
-        {isWideVersion && <Text mr="4">{username}</Text>}
+      <Flex align="center" justify="center" ml="auto">
+        {isWideVersion && <Text pr="4">{authData.username}</Text>}
+        <Button
+          colorScheme="orange"
+          variant="link"
+          ml="4"
+          size="xs"
+          onClick={() => handleLogout()}
+        >
+          Sair
+        </Button>
       </Flex>
     </Flex>
   );
