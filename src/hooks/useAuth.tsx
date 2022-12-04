@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const navigate = useNavigate();
 
   const login = (data: LoginData) => {
-    console.log(data);
     setAuthData(data);
     navigate('/home');
   };

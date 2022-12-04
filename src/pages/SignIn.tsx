@@ -12,6 +12,7 @@ import axios, { AxiosError } from 'axios';
 
 import { Input } from '../components/Form/Input';
 import { useAuth } from '../hooks/useAuth';
+import { CreateAccountModal } from '../components/Modal/CreateAccountModal';
 
 export const SignIn = () => {
   const [username, setUsername] = useState('');
@@ -35,7 +36,6 @@ export const SignIn = () => {
         password,
       })
       .then((response) => {
-        console.log(response);
         login({
           username,
           token: response.data.token,
@@ -58,45 +58,57 @@ export const SignIn = () => {
   };
 
   return (
-    <Flex w="100vw" h="100vh" align="center" justify="center">
-      <Flex
-        as="form"
-        width="100%"
-        maxWidth={360}
-        bg="gray.800"
-        p="8"
-        borderRadius={8}
-        flexDir="column"
-        onSubmit={handleSubmit}
-      >
-        <Stack spacing="4">
-          <Input
-            name="username"
-            label="Usuário"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-          <Input
-            name="password"
-            type="password"
-            label="Senha"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </Stack>
-        <Button
-          type="submit"
-          mt="6"
-          colorScheme="orange"
-          size="lg"
-          disabled={!username || !password}
+    <>
+      <Flex w="100vw" h="100vh" align="center" justify="center">
+        <Flex
+          as="form"
+          width="100%"
+          maxWidth={360}
+          bg="gray.800"
+          p="8"
+          borderRadius={8}
+          flexDir="column"
+          onSubmit={handleSubmit}
         >
-          Login
-        </Button>
-        <Button type="button" mt="6" colorScheme="orange" size="lg">
-          Criar conta
-        </Button>
+          <Stack spacing="4">
+            <Input
+              name="username"
+              label="Usuário"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+            <Input
+              name="password"
+              type="password"
+              label="Senha"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </Stack>
+          <Button
+            type="submit"
+            mt="6"
+            colorScheme="orange"
+            size="lg"
+            disabled={!username || !password}
+          >
+            Login
+          </Button>
+          <Button
+            type="button"
+            mt="6"
+            colorScheme="orange"
+            size="lg"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Criar conta
+          </Button>
+        </Flex>
       </Flex>
-    </Flex>
+      <CreateAccountModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 };
