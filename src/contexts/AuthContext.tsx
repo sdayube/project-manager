@@ -6,7 +6,7 @@ export interface LoginData {
 }
 
 const AuthContext = createContext({
-  authData: null,
+  authData: {} as LoginData,
   login: (data: LoginData) => {},
   logout: () => {},
 });
