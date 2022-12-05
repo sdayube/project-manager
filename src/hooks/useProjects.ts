@@ -114,6 +114,16 @@ export const useProjects = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const finishProject = async (id: string) => {
+    setIsLoading(true);
+
+    await axios
+      .patch(`http://localhost:3333/projects/${id}/done`, {}, { headers })
+      .then((response) => response.data)
+      .catch((error) => handleError(error))
+      .finally(() => setIsLoading(false));
+  };
+
   return {
     isLoading,
     hasError,
@@ -121,5 +131,6 @@ export const useProjects = () => {
     getProjectDetails,
     createProject,
     updateProject,
+    finishProject,
   };
 };

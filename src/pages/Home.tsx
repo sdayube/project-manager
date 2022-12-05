@@ -45,7 +45,7 @@ export const Home = () => {
   const [projectToUpdate, setProjectToUpdate] = useState<Project | null>(null);
 
   const { authData, logout } = useAuth();
-  const { fetchProjects, isLoading } = useProjects();
+  const { fetchProjects, finishProject, isLoading } = useProjects();
 
   const handleFetchProjects = async () => {
     await fetchProjects().then((response) => {
@@ -159,7 +159,16 @@ export const Home = () => {
                             Editar
                           </Button>
                           {!project.done && (
-                            <Button size="sm" fontSize="xs" colorScheme="green">
+                            <Button
+                              size="sm"
+                              fontSize="xs"
+                              colorScheme="green"
+                              onClick={() =>
+                                finishProject(project.id).then(() => {
+                                  handleFetchProjects();
+                                })
+                              }
+                            >
                               Concluir
                             </Button>
                           )}
