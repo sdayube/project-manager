@@ -18,7 +18,7 @@ export const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { authData, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -30,31 +30,7 @@ export const SignIn = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await axios
-      .post('http://localhost:3333/auth', {
-        username,
-        password,
-      })
-      .then((response) => {
-        login({
-          username,
-          token: response.data.token,
-        });
-      })
-      .catch((error: Error | AxiosError) => {
-        if (axios.isAxiosError(error)) {
-          toast({
-            title: 'Erro',
-            description:
-              error.response?.status === 404
-                ? 'Usuário não encontrado'
-                : 'Usuário ou Senha incorreta',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      });
+    await login({ username, password });
   };
 
   return (

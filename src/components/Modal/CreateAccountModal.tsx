@@ -14,6 +14,7 @@ import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
 import { Input } from '../Form/Input';
+import { useUsers } from '../../hooks/useUsers';
 
 interface CreateAccountModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export const CreateAccountModal = ({
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   const toast = useToast();
+  const { createUser } = useUsers();
 
   const handleCloseModal = () => {
     setName('');
@@ -52,29 +54,9 @@ export const CreateAccountModal = ({
       return;
     }
 
-    await axios
-      .post('http://localhost:3333/users', {
-        name,
-        username,
-        password,
-      })
-      .then((response) => {
-        handleCloseModal();
-      })
-      .catch((error: Error | AxiosError) => {
-        if (axios.isAxiosError(error)) {
-          toast({
-            title: 'Erro',
-            description:
-              error.response!.status === 400
-                ? 'Usuário já cadastrado'
-                : error.response!.data.error,
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      });
+    await createUser(name, username, password).then(() => {
+      handleCloseModal();
+    });
   };
 
   return (
