@@ -16,8 +16,6 @@ export const SignIn = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  console.log();
-
   useEffect(() => {
     if (authData) {
       navigate('/home');
