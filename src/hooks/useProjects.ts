@@ -124,6 +124,16 @@ export const useProjects = () => {
       .finally(() => setIsLoading(false));
   };
 
+  const deleteProject = async (id: string) => {
+    setIsLoading(true);
+
+    await axios
+      .delete(`http://localhost:3333/projects/${id}`, { headers })
+      .then((response) => response.data)
+      .catch((error) => handleError(error))
+      .finally(() => setIsLoading(false));
+  };
+
   return {
     isLoading,
     hasError,
@@ -132,5 +142,6 @@ export const useProjects = () => {
     createProject,
     updateProject,
     finishProject,
+    deleteProject,
   };
 };

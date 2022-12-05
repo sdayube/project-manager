@@ -1,14 +1,11 @@
 import {
   Button,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
-  Stack,
   useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -16,7 +13,6 @@ import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useProjects } from '../../hooks/useProjects';
 import { Project } from '../../pages/Home';
-import { Input } from '../Form/Input';
 import { UpsertBody } from './UpsertBody';
 
 interface ProjectUpdateModalProps {
