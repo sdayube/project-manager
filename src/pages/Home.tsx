@@ -21,6 +21,8 @@ import { RiAddLine } from 'react-icons/ri';
 
 import { Header } from '../components/Header';
 import { useAuth } from '../hooks/useAuth';
+import { ProjectDetailsModal } from '../components/Modal/ProjectDetailsModal';
+import { useProjects } from '../hooks/useProjects';
 
 interface Project {
   id: string;
@@ -32,39 +34,19 @@ interface Project {
 }
 
 export const Home = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
 
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [detailsId, setDetailsId] = useState('');
+
   const { authData, logout } = useAuth();
-
-  const handleFetchProjects = async () => {
-    setIsLoading(true);
-    setHasError(false);
-
-    try {
-      const response = await axios.get('http://localhost:3333/projects', {
-        headers: {
-          Authorization: `Bearer ${authData.token}`,
-          username: authData.username,
-        },
-      });
-
-      setProjects(response.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          logout();
-        }
-      }
-      setHasError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { fetchProjects, isLoading } = useProjects();
 
   useEffect(() => {
-    handleFetchProjects();
+    fetchProjects().then((response) => {
+      setProjects(response);
+    });
   }, []);
 
   return (
@@ -93,6 +75,10 @@ export const Home = () => {
         ) : hasError ? (
           <Flex justify="center">
             <Text>Falha ao obter dados dos projetos.</Text>
+          </Flex>
+        ) : projects.length === 0 ? (
+          <Flex justify="center">
+            <Text>Nenhum projeto encontrado.</Text>
           </Flex>
         ) : (
           <>
@@ -136,7 +122,15 @@ export const Home = () => {
                       </Td>
                       <Td>
                         <HStack spacing="2">
-                          <Button size="sm" fontSize="xs" colorScheme="orange">
+                          <Button
+                            size="sm"
+                            fontSize="xs"
+                            colorScheme="orange"
+                            onClick={() => {
+                              setDetailsId(project.id);
+                              setIsDetailsModalOpen(true);
+                            }}
+                          >
                             Detalhes
                           </Button>
                           {!project.done && (
@@ -154,15 +148,16 @@ export const Home = () => {
                 })}
               </Tbody>
             </Table>
-
-            {/* <Pagination
-              totalCountOfRegisters={data.totalCount}
-              currentPage={page}
-              onPageChange={setPage}
-            /> */}
           </>
         )}
       </Box>
+      {detailsId && (
+        <ProjectDetailsModal
+          isOpen={isDetailsModalOpen}
+          onClose={() => setIsDetailsModalOpen(false)}
+          id={detailsId}
+        />
+      )}
     </>
   );
 };
