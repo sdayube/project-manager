@@ -14,12 +14,22 @@ import { useAuth } from '../../hooks/useAuth';
 import { useProjects } from '../../hooks/useProjects';
 import { Project } from '../../pages/Home';
 import { UpsertBody } from './UpsertBody';
+import { upsertProjectFormSchema } from '../../schemas';
 
 interface ProjectCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
   refreshProjects: () => void;
 }
+
+const generateInitialValues = () => ({
+  id: '',
+  title: '',
+  zip_code: 0,
+  deadline: '',
+  cost: 0,
+  done: false,
+});
 
 export const ProjectCreateModal = ({
   isOpen,
@@ -28,14 +38,9 @@ export const ProjectCreateModal = ({
 }: ProjectCreateModalProps) => {
   const toast = useToast();
   const { authData, logout } = useAuth();
-  const [newProject, setNewProject] = useState<Project>({
-    id: '',
-    title: '',
-    zip_code: 0,
-    deadline: '',
-    cost: 0,
-    done: false,
-  });
+  const [newProject, setNewProject] = useState<Project>(
+    generateInitialValues(),
+  );
 
   const { createProject } = useProjects();
 
@@ -46,6 +51,7 @@ export const ProjectCreateModal = ({
     await createProject(title, zip_code, cost, deadline).then(() => {
       refreshProjects();
       onClose();
+      setNewProject(generateInitialValues());
     });
   };
 
@@ -57,7 +63,12 @@ export const ProjectCreateModal = ({
         <ModalCloseButton />
         <UpsertBody newProject={newProject} setNewProject={setNewProject} />
         <ModalFooter>
-          <Button colorScheme="green" mr={3} type="submit">
+          <Button
+            colorScheme="green"
+            mr={3}
+            type="submit"
+            disabled={!upsertProjectFormSchema.isValidSync(newProject)}
+          >
             Criar Projeto
           </Button>
           <Button colorScheme="orange" mr={3} onClick={onClose}>

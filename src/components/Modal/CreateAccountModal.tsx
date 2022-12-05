@@ -13,6 +13,7 @@ import {
 import { useState } from 'react';
 
 import { useUsers } from '../../hooks/useUsers';
+import { createAccountFormSchema } from '../../schemas';
 import { Input } from '../Form/Input';
 
 interface CreateAccountModalProps {
@@ -71,12 +72,16 @@ export const CreateAccountModal = ({
               label="Nome Completo"
               value={name}
               onChange={(event) => setName(event.target.value)}
+              isRequired
+              schema={createAccountFormSchema.fields.name}
             />
             <Input
               name="username"
               label="Nome de Usuário"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
+              isRequired
+              schema={createAccountFormSchema.fields.username}
             />
             <Input
               name="password"
@@ -84,6 +89,8 @@ export const CreateAccountModal = ({
               label="Senha"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              isRequired
+              schema={createAccountFormSchema.fields.password}
             />
             <Input
               name="passwordConfirmation"
@@ -91,6 +98,8 @@ export const CreateAccountModal = ({
               label="Confirmação da Senha"
               value={passwordConfirmation}
               onChange={(event) => setPasswordConfirmation(event.target.value)}
+              isRequired
+              schema={createAccountFormSchema.fields.passwordConfirmation}
             />
           </Stack>
         </ModalBody>
@@ -99,7 +108,14 @@ export const CreateAccountModal = ({
             type="submit"
             colorScheme="orange"
             mr={3}
-            disabled={!name || !username || !password || !passwordConfirmation}
+            disabled={
+              !createAccountFormSchema.isValidSync({
+                name,
+                username,
+                password,
+                passwordConfirmation,
+              })
+            }
           >
             Criar Conta
           </Button>

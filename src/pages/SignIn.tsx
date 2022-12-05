@@ -1,19 +1,22 @@
 import { Button, Flex, Stack, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
 
 import { Input } from '../components/Form/Input';
 import { CreateAccountModal } from '../components/Modal/CreateAccountModal';
 import { useAuth } from '../hooks/useAuth';
+import { signInFormSchema } from '../schemas';
 
 export const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { login } = useAuth();
+  const { authData, login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
-  const { authData } = useAuth();
+
+  console.log();
 
   useEffect(() => {
     if (authData) {
@@ -45,6 +48,8 @@ export const SignIn = () => {
               label="Usuário"
               value={username}
               onChange={(event) => setUsername(event.target.value)}
+              isRequired
+              schema={signInFormSchema.fields.username}
             />
             <Input
               name="password"
@@ -52,6 +57,8 @@ export const SignIn = () => {
               label="Senha"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              isRequired
+              schema={signInFormSchema.fields.password}
             />
           </Stack>
           <Button

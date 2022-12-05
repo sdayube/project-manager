@@ -14,6 +14,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useProjects } from '../../hooks/useProjects';
 import { Project } from '../../pages/Home';
 import { UpsertBody } from './UpsertBody';
+import { upsertProjectFormSchema } from '../../schemas';
 
 interface ProjectUpdateModalProps {
   isOpen: boolean;
@@ -52,7 +53,12 @@ export const ProjectUpdateModal = ({
         <ModalCloseButton />
         <UpsertBody newProject={newProject} setNewProject={setNewProject} />
         <ModalFooter>
-          <Button colorScheme="green" mr={3} type="submit">
+          <Button
+            colorScheme="green"
+            mr={3}
+            type="submit"
+            disabled={!upsertProjectFormSchema.isValidSync(newProject)}
+          >
             Encerrar Edição
           </Button>
           <Button colorScheme="orange" mr={3} onClick={onClose}>

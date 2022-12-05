@@ -1,5 +1,6 @@
 import { ModalBody, Stack } from '@chakra-ui/react';
 import { Project } from '../../pages/Home';
+import { upsertProjectFormSchema } from '../../schemas';
 import { Input } from '../Form/Input';
 
 interface UpsertBodyProps {
@@ -18,6 +19,8 @@ export const UpsertBody = ({ newProject, setNewProject }: UpsertBodyProps) => {
           onChange={(event) =>
             setNewProject({ ...newProject, title: event.target.value })
           }
+          isRequired
+          schema={upsertProjectFormSchema.fields.title}
         />
         <Input
           name="zip_code"
@@ -30,6 +33,8 @@ export const UpsertBody = ({ newProject, setNewProject }: UpsertBodyProps) => {
               zip_code: Number(event.target.value),
             });
           }}
+          isRequired
+          schema={upsertProjectFormSchema.fields.zip_code}
         />
         <Input
           name="cost"
@@ -42,6 +47,8 @@ export const UpsertBody = ({ newProject, setNewProject }: UpsertBodyProps) => {
               cost: Number(event.target.value),
             });
           }}
+          isRequired
+          schema={upsertProjectFormSchema.fields.cost}
         />
         <Input
           name="deadline"
@@ -54,6 +61,8 @@ export const UpsertBody = ({ newProject, setNewProject }: UpsertBodyProps) => {
               deadline: event.target.value + 'T00:00:00.000Z',
             })
           }
+          isRequired
+          schema={upsertProjectFormSchema.fields.deadline}
         />
       </Stack>
     </ModalBody>
