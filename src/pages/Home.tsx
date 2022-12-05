@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { RiAddLine } from 'react-icons/ri';
 
 import { Header } from '../components/Header';
+import { ProjectCreateModal } from '../components/Modal/ProjectCreateModal';
 import { ProjectDetailsModal } from '../components/Modal/ProjectDetailsModal';
 import { ProjectUpdateModal } from '../components/Modal/ProjectUpdateModal';
 import { useAuth } from '../hooks/useAuth';
@@ -26,7 +27,7 @@ import { useProjects } from '../hooks/useProjects';
 export interface Project {
   id: string;
   title: string;
-  zip_code: string;
+  zip_code: number;
   deadline: string;
   cost: number;
   done: boolean;
@@ -38,6 +39,7 @@ export const Home = () => {
 
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
   const [detailsId, setDetailsId] = useState('');
   const [projectToUpdate, setProjectToUpdate] = useState<Project | null>(null);
@@ -45,10 +47,14 @@ export const Home = () => {
   const { authData, logout } = useAuth();
   const { fetchProjects, isLoading } = useProjects();
 
-  useEffect(() => {
-    fetchProjects().then((response) => {
+  const handleFetchProjects = async () => {
+    await fetchProjects().then((response) => {
       setProjects(response);
     });
+  };
+
+  useEffect(() => {
+    handleFetchProjects();
   }, []);
 
   return (
@@ -65,6 +71,7 @@ export const Home = () => {
             fontSize="sm"
             colorScheme="orange"
             leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+            onClick={() => setCreateModalOpen(true)}
           >
             Novo projeto
           </Button>
@@ -184,13 +191,16 @@ export const Home = () => {
             setProjectToUpdate(null);
           }}
           project={projectToUpdate}
-          refreshProjects={() => {
-            fetchProjects().then((response) => {
-              setProjects(response);
-            });
-          }}
+          refreshProjects={() => handleFetchProjects()}
         />
       )}
+      <ProjectCreateModal
+        isOpen={isCreateModalOpen}
+        onClose={() => {
+          setCreateModalOpen(false);
+        }}
+        refreshProjects={() => handleFetchProjects()}
+      />
     </>
   );
 };

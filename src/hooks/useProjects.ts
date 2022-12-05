@@ -26,17 +26,17 @@ export const useProjects = () => {
     }
   };
 
+  const headers = {
+    Authorization: `Bearer ${authData.token}`,
+    username: authData.username,
+  };
+
   const fetchProjects = async () => {
     setIsLoading(true);
     setHasError(false);
 
     const data = await axios
-      .get('http://localhost:3333/projects', {
-        headers: {
-          Authorization: `Bearer ${authData.token}`,
-          username: authData.username,
-        },
-      })
+      .get('http://localhost:3333/projects', { headers })
       .then((response) => response.data)
       .catch((error) => handleError(error))
       .finally(() => setIsLoading(false));
@@ -50,8 +50,7 @@ export const useProjects = () => {
     const details = await axios
       .get('http://localhost:3333/project', {
         headers: {
-          Authorization: `Bearer ${authData.token}`,
-          username: authData.username,
+          ...headers,
           id,
         },
       })
@@ -62,10 +61,36 @@ export const useProjects = () => {
     return details;
   };
 
+  const createProject = async (
+    title: string,
+    zip_code: number,
+    cost: number,
+    deadline: string,
+  ) => {
+    setIsLoading(true);
+
+    const data = await axios
+      .post(
+        'http://localhost:3333/project',
+        {
+          title,
+          zip_code,
+          cost,
+          deadline,
+        },
+        { headers },
+      )
+      .then((response) => response.data)
+      .catch((error) => handleError(error))
+      .finally(() => setIsLoading(false));
+
+    return data;
+  };
+
   const updateProject = async (
     id: string,
     title: string,
-    zip_code: string,
+    zip_code: number,
     cost: number,
     deadline: string,
   ) => {
@@ -81,10 +106,7 @@ export const useProjects = () => {
           deadline,
         },
         {
-          headers: {
-            Authorization: `Bearer ${authData.token}`,
-            username: authData.username,
-          },
+          headers,
         },
       )
       .then((response) => response.data)
@@ -97,6 +119,7 @@ export const useProjects = () => {
     hasError,
     fetchProjects,
     getProjectDetails,
+    createProject,
     updateProject,
   };
 };

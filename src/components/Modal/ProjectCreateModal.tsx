@@ -19,30 +19,35 @@ import { Project } from '../../pages/Home';
 import { Input } from '../Form/Input';
 import { UpsertBody } from './UpsertBody';
 
-interface ProjectUpdateModalProps {
+interface ProjectCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
-  project: Project;
   refreshProjects: () => void;
 }
 
-export const ProjectUpdateModal = ({
+export const ProjectCreateModal = ({
   isOpen,
   onClose,
-  project,
   refreshProjects,
-}: ProjectUpdateModalProps) => {
+}: ProjectCreateModalProps) => {
   const toast = useToast();
   const { authData, logout } = useAuth();
-  const [newProject, setNewProject] = useState<Project>(project);
+  const [newProject, setNewProject] = useState<Project>({
+    id: '',
+    title: '',
+    zip_code: 0,
+    deadline: '',
+    cost: 0,
+    done: false,
+  });
 
-  const { updateProject } = useProjects();
+  const { createProject } = useProjects();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { id, title, zip_code, cost, deadline } = newProject;
+    const { title, zip_code, cost, deadline } = newProject;
 
-    await updateProject(id, title, zip_code, cost, deadline).then(() => {
+    await createProject(title, zip_code, cost, deadline).then(() => {
       refreshProjects();
       onClose();
     });
@@ -52,15 +57,15 @@ export const ProjectUpdateModal = ({
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent bg="gray.800" as="form" onSubmit={handleSubmit}>
-        <ModalHeader>Editar Projeto</ModalHeader>
+        <ModalHeader>Criar Novo Projeto</ModalHeader>
         <ModalCloseButton />
         <UpsertBody newProject={newProject} setNewProject={setNewProject} />
         <ModalFooter>
           <Button colorScheme="green" mr={3} type="submit">
-            Encerrar Edição
+            Criar Projeto
           </Button>
           <Button colorScheme="orange" mr={3} onClick={onClose}>
-            Fechar
+            Cancelar
           </Button>
         </ModalFooter>
       </ModalContent>
