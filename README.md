@@ -27,7 +27,7 @@ Para inicializar a aplicação:
 
 Tela de login
 
-placeholder
+![image](https://user-images.githubusercontent.com/68237073/205665957-92ecb66a-9fa0-4f1f-aa9b-2a3a38968295.png)
 
 &nbsp;<br>
 
@@ -36,7 +36,7 @@ placeholder
 
 Tela de criação de usuário, implementada como modal
 
-placeholder
+![image](https://user-images.githubusercontent.com/68237073/205666135-57c346c1-54d0-44c5-87b7-d24b3c6cc6f4.png)
 
 &nbsp;<br>
 
@@ -45,7 +45,7 @@ placeholder
 
 Tela de projetos, que exibe os projetos do usuário logado
 
-placeholder
+![image](https://user-images.githubusercontent.com/68237073/205666358-51e93604-01a5-407c-b41e-f25bdbe7a114.png)
 
 &nbsp;<br>
 
@@ -54,7 +54,7 @@ placeholder
 
 Modal de detalhes de um projeto específico
 
-placeholder
+![image](https://user-images.githubusercontent.com/68237073/205666524-b340abfb-839f-4903-bcf6-f5755c51dd69.png)
 
 &nbsp;<br>
 
@@ -63,7 +63,7 @@ placeholder
 
 Modal de edição de um projeto já existente
 
-placeholder
+![image](https://user-images.githubusercontent.com/68237073/205666881-37fcb347-3c9d-4a70-aea4-bdf73228d4c2.png)
 
 &nbsp;<br>
 
@@ -72,7 +72,7 @@ placeholder
 
 Modal de criação de um projeto novo
 
-placeholder
+![image](https://user-images.githubusercontent.com/68237073/205667263-af66191a-58f9-462b-81a6-6f17ce3a45ed.png)
 
 &nbsp;<br>
 
