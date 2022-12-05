@@ -1,10 +1,10 @@
-import { createContext, useContext, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { useContext, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useLocalStorage } from './useLocalStorage';
 import { AuthContext, LoginData } from '../contexts/AuthContext';
+import { useLocalStorage } from './useLocalStorage';
 
 interface AuthProviderProps {
   children: JSX.Element;

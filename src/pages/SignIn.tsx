@@ -1,18 +1,10 @@
-import {
-  Button,
-  Flex,
-  Stack,
-  FormLabel,
-  FormControl,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, Stack, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
 
 import { Input } from '../components/Form/Input';
-import { useAuth } from '../hooks/useAuth';
 import { CreateAccountModal } from '../components/Modal/CreateAccountModal';
+import { useAuth } from '../hooks/useAuth';
 
 export const SignIn = () => {
   const [username, setUsername] = useState('');
@@ -21,12 +13,13 @@ export const SignIn = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
+  const { authData } = useAuth();
 
-  // useEffect(() => {
-  //   if (authData) {
-  //     navigate('/home');
-  //   }
-  // }, [authData, navigate]);
+  useEffect(() => {
+    if (authData) {
+      navigate('/home');
+    }
+  }, [authData, navigate]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

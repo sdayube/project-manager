@@ -1,8 +1,6 @@
-import axios from 'axios';
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   Heading,
   HStack,
@@ -20,11 +18,12 @@ import { useEffect, useState } from 'react';
 import { RiAddLine } from 'react-icons/ri';
 
 import { Header } from '../components/Header';
-import { useAuth } from '../hooks/useAuth';
 import { ProjectDetailsModal } from '../components/Modal/ProjectDetailsModal';
+import { ProjectUpdateModal } from '../components/Modal/ProjectUpdateModal';
+import { useAuth } from '../hooks/useAuth';
 import { useProjects } from '../hooks/useProjects';
 
-interface Project {
+export interface Project {
   id: string;
   title: string;
   zip_code: string;
@@ -38,7 +37,10 @@ export const Home = () => {
   const [projects, setProjects] = useState<Project[]>([]);
 
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+
   const [detailsId, setDetailsId] = useState('');
+  const [projectToUpdate, setProjectToUpdate] = useState<Project | null>(null);
 
   const { authData, logout } = useAuth();
   const { fetchProjects, isLoading } = useProjects();
@@ -108,7 +110,12 @@ export const Home = () => {
                       </Td>
                       <Td>
                         <Text>
-                          {new Date(project.deadline).toLocaleDateString()}
+                          {new Date(project.deadline).toLocaleDateString(
+                            'pt-BR',
+                            {
+                              timeZone: 'UTC',
+                            },
+                          )}
                         </Text>
                       </Td>
                       <Td>
@@ -133,6 +140,17 @@ export const Home = () => {
                           >
                             Detalhes
                           </Button>
+                          <Button
+                            size="sm"
+                            fontSize="xs"
+                            colorScheme="purple"
+                            onClick={() => {
+                              setProjectToUpdate(project);
+                              setUpdateModalOpen(true);
+                            }}
+                          >
+                            Editar
+                          </Button>
                           {!project.done && (
                             <Button size="sm" fontSize="xs" colorScheme="green">
                               Concluir
@@ -156,6 +174,21 @@ export const Home = () => {
           isOpen={isDetailsModalOpen}
           onClose={() => setIsDetailsModalOpen(false)}
           id={detailsId}
+        />
+      )}
+      {projectToUpdate && (
+        <ProjectUpdateModal
+          isOpen={isUpdateModalOpen}
+          onClose={() => {
+            setUpdateModalOpen(false);
+            setProjectToUpdate(null);
+          }}
+          project={projectToUpdate}
+          refreshProjects={() => {
+            fetchProjects().then((response) => {
+              setProjects(response);
+            });
+          }}
         />
       )}
     </>

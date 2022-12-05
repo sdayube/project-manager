@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAuth } from './useAuth';
 
 export const useProjects = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const toast = useToast();
   const { authData, logout } = useAuth();
@@ -62,5 +62,41 @@ export const useProjects = () => {
     return details;
   };
 
-  return { isLoading, hasError, fetchProjects, getProjectDetails };
+  const updateProject = async (
+    id: string,
+    title: string,
+    zip_code: string,
+    cost: number,
+    deadline: string,
+  ) => {
+    setIsLoading(true);
+
+    await axios
+      .put(
+        `http://localhost:3333/projects/${id}`,
+        {
+          title,
+          zip_code,
+          cost,
+          deadline,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+            username: authData.username,
+          },
+        },
+      )
+      .then((response) => response.data)
+      .catch((error) => handleError(error))
+      .finally(() => setIsLoading(false));
+  };
+
+  return {
+    isLoading,
+    hasError,
+    fetchProjects,
+    getProjectDetails,
+    updateProject,
+  };
 };

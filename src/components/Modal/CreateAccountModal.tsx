@@ -11,10 +11,9 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import axios, { AxiosError } from 'axios';
 
-import { Input } from '../Form/Input';
 import { useUsers } from '../../hooks/useUsers';
+import { Input } from '../Form/Input';
 
 interface CreateAccountModalProps {
   isOpen: boolean;
